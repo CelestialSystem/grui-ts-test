@@ -1,24 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { SenchaGrid, Column, IntegerColumn, DateColumn } from '@sencha/sencha-grid';
+import '@sencha/sencha-grid/dist/themes/grui.css';
 
 function App() {
+
+  const store = {
+    loadData: async function loadData() {
+      const response = await fetch(
+        'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson',
+      );
+      const jsonResponse = await response.json();
+      const dataArray = await jsonResponse;
+      const { features } = dataArray;
+      const data = features.map((property: any) => property.properties);
+      return data;
+    },
+    autoLoad: true,
+    autoSync: true,
+  };
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <SenchaGrid store={store} >
+        <DateColumn field="time" text="Date" />
+        <Column field="mag" text="Magnitude" />
+        <Column field="place" text="Location" flex={1} />
+      </SenchaGrid>
     </div>
   );
 }

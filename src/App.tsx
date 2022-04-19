@@ -22,7 +22,7 @@ function App() {
 
   return (
     <div className="App">
-      <SenchaGrid store={store} >
+      <SenchaGrid store={store} style={{ height: '50vh' }}>
         <DateColumn field="time" text="Date" />
         <Column field="mag" text="Magnitude" />
         <Column field="place" text="Location" flex={1} />
